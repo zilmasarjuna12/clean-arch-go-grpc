@@ -1,0 +1,14 @@
+syntax="proto3";
+package product_grpc;
+option go_package = "clean-arch-go-grpc/internal/delivery/grpc/proto/product_grpc";
+
+service ProductHandler {
+  rpc Create (Product) returns (Product);
+}
+
+message Product {
+  string  ID            = 1;
+  string  Name          = 2;
+  string  Description   = 3;
+  float   Price         = 4; 
+}
