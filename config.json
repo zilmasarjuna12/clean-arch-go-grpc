@@ -1,0 +1,23 @@
+{
+  "app": {
+    "name": "clean-arch-go"
+  },
+  "web": {
+    "port": 3000
+  },
+  "log": {
+    "level": 6
+  },
+  "database": {
+    "username": "root",
+    "password": "secret",
+    "host": "localhost",
+    "port": 3306,
+    "name": "product-db",
+    "pool": {
+      "idle": 10,
+      "max": 100,
+      "lifetime": 300
+    }
+  }
+}
