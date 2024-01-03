@@ -23,7 +23,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-
 	server := grpc.NewServer()
 
 	pr := repository.NewProductRepository(gorm, logrus)
@@ -32,6 +31,7 @@ func main() {
 
 	delivery_grpc.NewProductServerGrpc(server, logrus, pu)
 
+	logrus.Infof("server listening :%d", 3000)
 	err = server.Serve(lis)
 	if err != nil {
 		fmt.Println("Unexpected Error", err)

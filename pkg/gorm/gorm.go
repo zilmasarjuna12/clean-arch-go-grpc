@@ -6,7 +6,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -18,18 +18,19 @@ func NewDatabase(
 	username := viper.GetString("database.username")
 	password := viper.GetString("database.password")
 	host := viper.GetString("database.host")
-	port := viper.GetInt("database.port")
+	port := viper.GetString("database.port")
 	database := viper.GetString("database.name")
 	idleConnection := viper.GetInt("database.pool.idle")
 	maxConnection := viper.GetInt("database.pool.max")
 	maxLifeTimeConnection := viper.GetInt("database.pool.lifetime")
 
 	// init connection mysql
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", username, password, host, port, database)
+	// dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", username, password, host, port, database)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", host, username, password, database, port)
 
-	log.Printf("INFO: connecting to db %s", dsn)
+	log.Printf("connecting to db %s", dsn)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: logger.New(&logrusWriter{Logger: log}, logger.Config{
 			SlowThreshold:             time.Second * 5,
 			Colorful:                  false,
@@ -46,14 +47,14 @@ func NewDatabase(
 	sqlDB, err := db.DB()
 
 	if err != nil {
-		log.Fatalf("ERROR: setup pooling: %s", err.Error())
+		log.Fatalf("setup pooling: %s", err.Error())
 	}
 
 	sqlDB.SetMaxIdleConns(idleConnection)
 	sqlDB.SetMaxOpenConns(maxConnection)
 	sqlDB.SetConnMaxLifetime(time.Second * time.Duration(maxLifeTimeConnection))
 
-	log.Printf("INFO: connected to db")
+	log.Printf("connected to db")
 	return db
 }
 
