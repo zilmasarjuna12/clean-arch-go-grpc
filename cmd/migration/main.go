@@ -44,7 +44,7 @@ func main() {
 	s, _ := goose.GetDBVersion(db)
 	fmt.Println("version of db", s)
 
-	if err := goose.Run("up", db, "../../database/migration"); err != nil {
+	if err := goose.Run("up", db, "./database/migration"); err != nil {
 		log.Printf("error %s", err.Error())
 	}
 }
