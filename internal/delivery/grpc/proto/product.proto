@@ -4,6 +4,13 @@ option go_package = "clean-arch-go-grpc/internal/delivery/grpc/proto/product_grp
 
 service ProductHandler {
   rpc Create (Product) returns (Product);
+  rpc GetList(Empty) returns (Products);
+}
+
+message Empty {}
+
+message Products {
+  repeated Product Products = 1;
 }
 
 message Product {

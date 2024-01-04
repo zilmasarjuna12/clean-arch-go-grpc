@@ -15,6 +15,7 @@ type productUsecase struct {
 }
 
 type IProductUsecase interface {
+	Gets(ctx context.Context) ([]*entity.Product, error)
 	Create(ctx context.Context, product *entity.Product) (*entity.Product, error)
 	GetByID(ctx context.Context, id string) (*product_grpc.Product, error)
 }
@@ -27,6 +28,16 @@ func NewProductUsecase(
 		log,
 		productRepository,
 	}
+}
+
+func (usecase *productUsecase) Gets(ctx context.Context) ([]*entity.Product, error) {
+	products, err := usecase.productRepository.Gets(ctx)
+	if err != nil {
+		usecase.log.Errorf("error %v", err)
+		return nil, err
+	}
+
+	return products, nil
 }
 
 func (usecase *productUsecase) Create(ctx context.Context, product *entity.Product) (*entity.Product, error) {

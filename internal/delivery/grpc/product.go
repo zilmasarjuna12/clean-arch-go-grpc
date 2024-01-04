@@ -58,3 +58,22 @@ func (s *server) Create(ctx context.Context, reqProduct *product_grpc.Product) (
 
 	return res, nil
 }
+
+func (s *server) GetList(context.Context, *product_grpc.Empty) (*product_grpc.Products, error) {
+	products, err := s.productUsecase.Gets(context.Background())
+	if err != nil {
+		return nil, err
+	}
+
+	res := &product_grpc.Products{
+		Products: []*product_grpc.Product{},
+	}
+
+	for _, product := range products {
+		res.Products = append(res.Products, &product_grpc.Product{
+			ID: product.ID.String(),
+		})
+	}
+
+	return res, nil
+}
