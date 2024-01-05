@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	product_grpc "clean-arch-go-grpc/internal/delivery/grpc/proto"
 	"clean-arch-go-grpc/internal/entity"
 	"clean-arch-go-grpc/internal/repository"
 	"context"
@@ -17,7 +16,7 @@ type productUsecase struct {
 type IProductUsecase interface {
 	Gets(ctx context.Context) ([]*entity.Product, error)
 	Create(ctx context.Context, product *entity.Product) (*entity.Product, error)
-	GetByID(ctx context.Context, id string) (*product_grpc.Product, error)
+	GetByID(ctx context.Context, id string) (*entity.Product, error)
 }
 
 func NewProductUsecase(
@@ -50,7 +49,7 @@ func (usecase *productUsecase) Create(ctx context.Context, product *entity.Produ
 	return product, nil
 }
 
-func (usecase *productUsecase) GetByID(ctx context.Context, id string) (*product_grpc.Product, error) {
+func (usecase *productUsecase) GetByID(ctx context.Context, id string) (*entity.Product, error) {
 	product, err := usecase.GetByID(ctx, id)
 	if err != nil {
 		usecase.log.Errorf("error %v", err)

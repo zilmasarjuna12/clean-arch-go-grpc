@@ -3,11 +3,28 @@ package product_grpc;
 option go_package = "clean-arch-go-grpc/internal/delivery/grpc/proto/product_grpc";
 
 service ProductHandler {
-  rpc Create (Product) returns (Product);
-  rpc GetList(Empty) returns (Products);
+  rpc GetList(Empty) returns (Products) {};
+  rpc Get(GetRequest) returns (Product) {};
+  rpc GetStream(Empty) returns (stream Product) {};
+  rpc BatchCreate(stream Product) returns (BatchCreateResponse) {}; 
+  rpc Create (Product) returns (Product) {};
+}
+
+message ErrorMessage {
+  string message = 1;
 }
 
 message Empty {}
+
+message GetRequest {
+  string ID = 1;
+}
+
+message BatchCreateResponse {
+  int64 TotalSuccess = 1;
+
+  repeated ErrorMessage Errors = 2;
+}
 
 message Products {
   repeated Product Products = 1;
