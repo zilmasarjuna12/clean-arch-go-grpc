@@ -1,5 +1,4 @@
 # Clean Architecture Go gRPC
-
 This is example of implementation clean architecure in golang and gRPC.
 
 ## Installation
